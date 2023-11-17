@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 
 @login_required
 def dashboard(request):
@@ -48,4 +50,20 @@ def user_login(request):
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
 
+@login_required
+def user_list(request):
+    template_name = 'account/user/list.html'
+    users = User.objects.filter(is_active=True)
+    return render(request,
+                  template_name,
+                  {'section':'people',
+                   'users':users})
 
+@login_required
+def user_detail(request, username):
+    template_name = 'account/user/detail.html'
+    user = get_object_or_404(User, username=username, is_active=True)
+    return render(request,
+                  template_name,
+                  {'user': user,
+                   'section': 'people'})

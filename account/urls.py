@@ -31,5 +31,7 @@ urlpatterns = [
 
     path('register/', views.user_registration, name='register' ),
 
-    path('dashboard/', views.dashboard , name='dashboard')
+    path('dashboard/', views.dashboard , name='dashboard'),
+    path('users/', views.user_list, name='user_list'),
+    path('users/<username>/', views.user_detail, name='user_detail'),
 ]
