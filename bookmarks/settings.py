@@ -30,16 +30,20 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mybookmarks.com','localhost', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    # Local
+    # Third-party apps
+    'django_extensions',
+    'easy_thumbnails',
+
+    # Local apps
     'images.apps.ImagesConfig',
     'account.apps.AccountConfig',
-    # Third party
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -140,3 +144,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+if DEBUG:
+    import mimetypes
+    mimetypes.add_type('application/javascript', '.js', True)
+    mimetypes.add_type('text/css', '.css', True)
