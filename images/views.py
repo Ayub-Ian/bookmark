@@ -8,6 +8,8 @@ from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, \
                                   PageNotAnInteger
+from actions.utils import create_action
+
 
 @login_required
 def image_create(request):
@@ -21,6 +23,7 @@ def image_create(request):
             # assign current user to the item
             new_image.user = request.user
             new_image.save()
+            create_action(request.user, verb='bookmarked image', target=new_image)
             messages.success(request,
                              'Image added successfully')
             # redirect to new created item detail view
@@ -54,6 +57,7 @@ def image_like(request):
             image = Image.objects.get(id=image_id)
             if action == 'like':
                 image.users_like.add(request.user)
+                create_action(request.user, 'likes', image)
             else:
                 image.users_like.remove(request.user)
             return JsonResponse({'status':'ok'})
